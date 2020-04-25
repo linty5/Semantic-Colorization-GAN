@@ -158,7 +158,39 @@ def trainer_noGAN(opt):
             img_list = [fake_RGB, true_RGB]
             name_list = ['pred', 'gt']
             utils.save_sample_png(sample_folder = opt.sample_path, sample_name = 'epoch%d' % (epoch + 1), img_list = img_list, name_list = name_list)
+        '''
+        ### Validation
+        val_PSNR = 0
+        num_of_val_image = 0
 
+        for j, (in_img, RGBout_img) in enumerate(val_loader):
+            
+            # To device
+            # A is for input image, B is for target image
+            in_img = in_img.cuda()
+            RGBout_img = RGBout_img.cuda()
+
+            # Forward propagation
+            with torch.no_grad():
+                out, _ = generator(in_img)
+
+            # Accumulate num of image and val_PSNR
+            num_of_val_image += in_img.shape[0]
+            val_PSNR += utils.psnr(out, RGBout_img, 1) * in_img.shape[0]
+
+        val_PSNR = val_PSNR / num_of_val_image
+
+        ### Sample data every epoch
+        if (epoch + 1) % 1 == 0:
+            img_list = [in_img, out, RGBout_img]
+            name_list = ['input', 'output', 'gt']
+            utils.save_sample_png(sample_folder = sample_folder, sample_name = 'val_epoch%d' % (epoch + 1), img_list = img_list, name_list = name_list, pixel_max_cnt = 255)
+
+        # Record average PSNR
+        writer.add_scalar('data/val_PSNR', val_PSNR, epoch)
+        print('PSNR at epoch %d: %.4f' % ((epoch + 1), val_PSNR))
+        '''
+        
 def trainer_LSGAN(opt):
 
     # cudnn benchmark

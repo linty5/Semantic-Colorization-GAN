@@ -85,7 +85,9 @@ There are many fantastic **legacy photography works**. Our colorization system s
 
 ## 3 Getting Started
 
-We will release the trained models and instructions after publication.
+We will release the trained models and instructions after publication. The networks are shown as (jointly generates colorization and saliency map):
+
+![Generator](./images/generator.png)
 
 ## 4 Failure Examples and Future Work
 
@@ -100,6 +102,8 @@ In the future, we will try to train on ImageNet and utilize more powerful regula
 If you would like to train SCGAN on NIR data, just change the **dataset setting**. We show some examples of NIR colorization:
 
 ![Failure Cases](./images/nir.png)
+
+![Failure Cases](./images/results_nir.png)
 
 ## 6 Related Projects
 **Automatic Colorization: [Project](https://tinyclouds.org/colorize/)
